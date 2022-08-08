@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/person"
-        android:title="Person"/>
+        android:id="@+id/home"
+        android:icon="@drawable/home_black"
+        android:title=""/>
 
     <item
-        android:id="@+id/home"
-        android:title="Home"
+        android:id="@+id/search"
+        android:icon="@drawable/search_white"
+        android:title=""
        />
     <item
-        android:id="@+id/settings"
-        android:title="Settings"
+        android:id="@+id/space"
+        android:icon="@drawable/mic_white"
+        android:title=""
       />
+    <item
+        android:id="@+id/notif"
+        android:icon="@drawable/notif_white"
+        android:title=""
+        />
+    <item
+        android:id="@+id/message"
+        android:icon="@drawable/message_white"
+        android:title=""
+        />
 </menu>

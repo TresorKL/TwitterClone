@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFragment">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/homeDrawer"
+        >
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/myMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+       android:layout_gravity="start"
+        android:background="@color/white"
+
+        app:headerLayout="@layout/menu_header"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/main_menu" />
+    <!-- TOOL/APP BAR -->
+    <!--            app:headerLayout="@layout/menu_header"-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1000sp"
+            android:orientation="vertical"
+            >
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/my_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black">
+                <!-- IMAGE ICON -->
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user"
+
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:src="@drawable/profile"
+
+                    />
+
+                <ImageView
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/twitterlogo" />
+
+
+                <ImageView
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/timeline" />
+
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</FrameLayout>
