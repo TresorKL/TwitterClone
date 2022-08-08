@@ -6,7 +6,10 @@
         <entry key="app/src/main/res/drawable/home_Icon_background.xml" value="0.2175" />
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/style_go_btn.xml" value="0.2175" />
+        <entry key="app/src/main/res/drawable/style_sapce3.xml" value="0.2175" />
         <entry key="app/src/main/res/drawable/style_searchbar.xml" value="0.2175" />
+        <entry key="app/src/main/res/drawable/style_space.xml" value="0.2175" />
+        <entry key="app/src/main/res/drawable/style_space2.xml" value="0.2175" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21937321937321938" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.32563405797101447" />
         <entry key="app/src/main/res/layout/fragment_main_page.xml" value="0.32563405797101447" />

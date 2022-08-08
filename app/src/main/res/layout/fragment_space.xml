@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".SpaceFragment">
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -23,56 +24,295 @@
             app:menu="@menu/main_menu" />
         <!-- TOOL/APP BAR -->
         <!--            app:headerLayout="@layout/menu_header"-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
 
-            >
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1000sp"
-                android:background="#00695C"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/my_toolbar"
+                >
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/black">
-                    <!-- IMAGE ICON -->
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/my_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/black">
+                        <!-- IMAGE ICON -->
 
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/user"
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/user"
 
-                        android:layout_width="30sp"
-                        android:layout_height="30sp"
-                        android:src="@drawable/profile"
+                            android:layout_width="30sp"
+                            android:layout_height="30sp"
+                            android:src="@drawable/profile"
 
-                        />
+                            />
 
-                    <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="60sp"
+                            android:text="Twitter"
+                            android:textColor="@color/white"
+
+                            android:textSize="20sp"
+
+                            android:textStyle="bold"
+
+                            />
+
+
+                    </androidx.appcompat.widget.Toolbar>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="60sp"
-                        android:text="Twitter"
-                        android:textColor="@color/white"
+                        android:layout_marginTop="12sp"
+                        android:orientation="vertical">
 
-                        android:textSize="20sp"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Happening Now"
+                            android:textColor="@color/white"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
 
-                        android:textStyle="bold"
+                            />
 
-                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Spaces going right now"
+                            android:textColor="#8E8B8B"
+
+                            android:textStyle="bold"
+
+                            />
 
 
-                </androidx.appcompat.widget.Toolbar>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="380sp"
+                        android:layout_height="250sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12sp"
+                        android:background="@drawable/style_go_btn"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20sp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20sp"
+                                android:text="LIVE"
+                                android:textColor="@color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="300sp"
+                                android:text="..."
+                                android:textColor="@color/white"
+
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="260sp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20sp"
+                            android:text="#NFT MEGA Collection, Sharing #NFTs #Giveaway "
+                            android:textColor="@color/white"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20sp"
+
+                            android:text="NFTs .  Cryptocurrencies . Investing"
+                            android:textColor="@color/white" />
 
 
-            </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="380sp"
+                        android:layout_height="250sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12sp"
+                        android:background="@drawable/style_space"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20sp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20sp"
+                                android:text="LIVE"
+                                android:textColor="@color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="300sp"
+                                android:text="..."
+                                android:textColor="@color/white"
+
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="260sp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20sp"
+                            android:text="#NFT MEGA Collection, Sharing #NFTs #Giveaway "
+                            android:textColor="@color/white"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20sp"
+
+                            android:text="NFTs .  Cryptocurrencies . Investing"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
 
 
-        </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="380sp"
+                        android:layout_height="250sp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12sp"
+                        android:background="@drawable/style_space2"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20sp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20sp"
+                                android:text="LIVE"
+                                android:textColor="@color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="300sp"
+                                android:text="..."
+                                android:textColor="@color/white"
+
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="260sp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20sp"
+                            android:text="#NFT MEGA Collection, Sharing #NFTs #Giveaway "
+                            android:textColor="@color/white"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20sp"
+
+                            android:text="NFTs .  Cryptocurrencies . Investing"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="380sp"
+                        android:layout_height="250sp"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:layout_marginTop="12sp"
+                        android:background="@drawable/style_space3">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20sp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20sp"
+                                android:text="LIVE"
+                                android:textColor="@color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="300sp"
+                                android:text="..."
+                                android:textColor="@color/white"
+
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="260sp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20sp"
+                            android:text="#NFT MEGA Collection, Sharing #NFTs #Giveaway "
+                            android:textColor="@color/white"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20sp"
+
+                            android:text="NFTs .  Cryptocurrencies . Investing"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
