@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/trendRow"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17sp"
+        android:background="#000000"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trending in South Africa"
+                android:textColor="#858383"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/trendName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kanye"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tweets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="28.0k tweets"
+                android:textColor="#858383" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

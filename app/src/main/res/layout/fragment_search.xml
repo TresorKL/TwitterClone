@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SearchFragment">
 
     <androidx.drawerlayout.widget.DrawerLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/homeDrawer"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/myMenu"
@@ -23,17 +23,23 @@
             app:menu="@menu/main_menu" />
         <!-- TOOL/APP BAR -->
         <!--            app:headerLayout="@layout/menu_header"-->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
             >
 
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1000sp"
-                android:background="#9C2E2E"
+                android:layout_height="match_parent"
+                android:background="#000000"
+
                 android:orientation="vertical">
+
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/my_toolbar"
@@ -75,14 +81,24 @@
 
                 </androidx.appcompat.widget.Toolbar>
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-9sp"
+                    android:src="@drawable/mask" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/trendRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
 
             </LinearLayout>
 
 
-
-
         </RelativeLayout>
-
+        </androidx.core.widget.NestedScrollView>
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </FrameLayout>

@@ -5,11 +5,15 @@ import android.os.Bundle;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.twitterclone.Trend.Trend;
+import com.example.twitterclone.adapters.TrendAdapter;
 import com.google.android.material.navigation.NavigationView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -67,8 +71,21 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_search, container, false);
 
+        Trend trendOne=new Trend("Trending", "Kanye", "29.6k Tweets");
+        Trend trendTwo=new Trend("Sport Trending", "Ronaldo", "140k Tweets");
+        Trend trendThree=new Trend("Sport Trending", "Kaizer Chiefs", "3.257 Tweets");
+        Trend trendFour=new Trend("Politics Trending", "Gaza", "567k Tweets");
+        Trend trendFive=new Trend("Trending in South Africa", "LinkedIn", "43.5k");
+        Trend trendSix=new Trend("Trending in Football", "Ten Hag", "118k");
+        Trend trendSeven=new Trend("Trending", "State House", "12.2k");
 
+        Trend[] trends = {trendOne,trendSix,trendSeven,trendTwo,trendThree,trendFour,trendOne,trendTwo,trendFive,trendSix,trendSeven};
+        RecyclerView myRecyclerView = view.findViewById(R.id.trendRecycler);
 
+        TrendAdapter adapter = new TrendAdapter(trends);
+        myRecyclerView.setHasFixedSize(true);
+        myRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        myRecyclerView.setAdapter(adapter);
 
 
         DrawerLayout drawerLayout = view.findViewById(R.id.homeDrawer);
