@@ -61,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+        bottomNavigationView=findViewById(R.id.bottomNavigationView);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -68,13 +72,30 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.home:
-                                //need change icon of favotites here.
+                               // HomeFragment homeFragment = new HomeFragment();
+                                FragmentManager manager = getSupportFragmentManager();
+                                manager.beginTransaction()
+                                        .replace(R.id.mainFragment, homeFragment, homeFragment.getTag())
+                                        .commit();
+                                break;
                             case R.id.search:
-
+                                SearchFragment searchFragment = new SearchFragment();
+                                manager = getSupportFragmentManager();
+                                manager.beginTransaction()
+                                        .replace(R.id.mainFragment, searchFragment, searchFragment.getTag())
+                                        .commit();
+                                break;
                             case R.id.space:
-
+                                SpaceFragment spaceFragment = new SpaceFragment();
+                                manager = getSupportFragmentManager();
+                                manager.beginTransaction()
+                                        .replace(R.id.mainFragment, spaceFragment, spaceFragment.getTag())
+                                        .commit();
+                                break;
                             case R.id.notif:
 
+
+                                break;
                             case R.id.message:
 
                         }
