@@ -9,6 +9,8 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -51,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.black));
 
 
-
         HomeFragment homeFragment = new HomeFragment();
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
@@ -59,11 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
 
-
-
-
-
-        bottomNavigationView=findViewById(R.id.bottomNavigationView);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -72,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.home:
-                               // HomeFragment homeFragment = new HomeFragment();
+                                // HomeFragment homeFragment = new HomeFragment();
+
+
                                 FragmentManager manager = getSupportFragmentManager();
                                 manager.beginTransaction()
                                         .replace(R.id.mainFragment, homeFragment, homeFragment.getTag())
@@ -102,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-
 
 
 //        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);

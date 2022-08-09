@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="20sp"
+    android:id="@+id/fleetId"
+
+    >
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="65sp"
+            android:layout_height="65sp"
+            android:id="@+id/fleetBackground"
+            android:background="@drawable/style_fleet"
+            >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="62sp"
+            android:layout_height="62sp"
+            android:layout_margin="5sp"
+            android:id="@+id/userImage"
+            android:src="@drawable/story"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fleetUserName"
+            android:text="UserName"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            />
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

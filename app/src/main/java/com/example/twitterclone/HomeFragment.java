@@ -1,16 +1,25 @@
 package com.example.twitterclone;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.twitterclone.Fleet.Fleet;
+import com.example.twitterclone.adapters.FleetAdapter;
+import com.example.twitterclone.adapters.TrendAdapter;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -21,6 +30,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class HomeFragment extends Fragment {
     CircleImageView menu;
+    RecyclerView.LayoutManager RecyclerViewLayoutManager;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -34,15 +44,7 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -79,6 +81,52 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        Drawable image = getResources().getDrawable(R.drawable.story);
+        Drawable image2 = getResources().getDrawable(R.drawable.trezor);
+
+        Fleet fleetOne = new Fleet();
+        fleetOne.setUserProfile(image2);
+        fleetOne.setUserName("TresorKL");
+
+        Fleet fleetTwo = new Fleet();
+        fleetTwo.setUserProfile(image);
+        fleetTwo.setUserName("Enock");
+
+        Fleet fleetThree = new Fleet();
+        fleetThree.setUserProfile(image);
+        fleetThree.setUserName("David");
+
+
+        Fleet fleetFour = new Fleet();
+        fleetFour.setUserProfile(image2);
+        fleetFour.setUserName("Norbert");
+
+
+        List<Fleet> fleets = new ArrayList<>();
+        fleets.add(fleetOne);
+        fleets.add(fleetTwo);
+        fleets.add(fleetTwo);
+        fleets.add(fleetTwo);
+        fleets.add(fleetThree);
+        fleets.add(fleetFour);
+        fleets.add(fleetThree);
+        fleets.add(fleetFour);
+        fleets.add(fleetThree);
+        fleets.add(fleetFour);
+
+
+        RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.fleetRecycler);
+//        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+      //  layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+       //  RecyclerView myList = (RecyclerView) findViewById(R.id.my_recycler_view);
+
+
+        FleetAdapter adapter = new FleetAdapter(fleets);
+        myRecyclerView.setLayoutManager(layoutManager);
+        //myRecyclerView.setHasFixedSize(true);
+       // myRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        myRecyclerView.setAdapter(adapter);
 
 
         return view;
