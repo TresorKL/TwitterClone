@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.black));
 
 
+        //initialize homeFragment when Main activity start
         HomeFragment homeFragment = new HomeFragment();
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
 
+        // navigate through fragment according to options clicked
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -101,18 +103,6 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-
-
-//        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-//        menu = findViewById(R.id.user);
-//        menu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                drawerLayout.openDrawer(GravityCompat.START);
-//
-//            }
-//        });
 
 
     }

@@ -83,10 +83,18 @@ public class HomeFragment extends Fragment {
 
         Drawable image = getResources().getDrawable(R.drawable.story);
         Drawable image2 = getResources().getDrawable(R.drawable.trezor);
+        Drawable image3 = getResources().getDrawable(R.drawable.profile);
+        Drawable image4 = getResources().getDrawable(R.drawable.ktl);
+        List<Drawable> fleeImages= new ArrayList<>();
+        fleeImages.add(image);
+        fleeImages.add(image2);
+        fleeImages.add(image3);
+        fleeImages.add(image4);
 
         Fleet fleetOne = new Fleet();
         fleetOne.setUserProfile(image2);
         fleetOne.setUserName("TresorKL");
+        fleetOne.setFleetImages(fleeImages);
 
         Fleet fleetTwo = new Fleet();
         fleetTwo.setUserProfile(image);
@@ -122,7 +130,7 @@ public class HomeFragment extends Fragment {
        //  RecyclerView myList = (RecyclerView) findViewById(R.id.my_recycler_view);
 
 
-        FleetAdapter adapter = new FleetAdapter(fleets);
+        FleetAdapter adapter = new FleetAdapter(fleets, getContext(), getActivity().getWindowManager());
         myRecyclerView.setLayoutManager(layoutManager);
         //myRecyclerView.setHasFixedSize(true);
        // myRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));

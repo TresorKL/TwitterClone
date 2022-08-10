@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+
         >
 
         <RelativeLayout
@@ -19,14 +20,18 @@
             android:layout_height="65sp"
             android:id="@+id/fleetBackground"
             android:background="@drawable/style_fleet"
+            android:layout_margin="10sp"
             >
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="62sp"
-            android:layout_height="62sp"
-            android:layout_margin="5sp"
-            android:id="@+id/userImage"
-            android:src="@drawable/story"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userImage"
+                android:layout_width="62sp"
+                android:layout_height="62sp"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginBottom="5sp"
+                android:src="@drawable/story" />
 
         </RelativeLayout>
 

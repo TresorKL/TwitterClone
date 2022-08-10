@@ -71,6 +71,8 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_search, container, false);
 
+        // Static trends to be displayed
+
         Trend trendOne=new Trend("Trending", "Kanye", "29.6k Tweets");
         Trend trendTwo=new Trend("Sport Trending", "Ronaldo", "140k Tweets");
         Trend trendThree=new Trend("Sport Trending", "Kaizer Chiefs", "3.257 Tweets");
