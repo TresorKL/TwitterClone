@@ -181,7 +181,7 @@ public class HomeFragment extends Fragment {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContext().getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                
+
 
                 ///-------------------------------------------------------
                 ///---------------EXTRACT IMAGE NAME -------------------
