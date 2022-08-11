@@ -105,10 +105,12 @@ public class FleetAdapter extends RecyclerView.Adapter<FleetAdapter.ViewHolder> 
                     public void onClick(View v) {
 
                        if(post!=fleetPosts.size()) {
+                          // countDown.cancel();
                            MyCountDown countDown = new MyCountDown(5000, 1000, progressBar);
                            fleetImage.setImageDrawable(fleets.get(holder.getAdapterPosition()).getFleetImages().get(post++));
+                           countDown.cancel();
+                            countDown.start();
 
-                           countDown.start();
                        }else {
                            dialog.dismiss();
                        }

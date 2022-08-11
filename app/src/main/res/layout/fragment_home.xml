@@ -68,15 +68,67 @@
 
                 </androidx.appcompat.widget.Toolbar>
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fleetRecycler"
-
-                    android:layout_width="match_parent"
+                <!--                Fleets container-->
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20sp"
+                            android:orientation="vertical">
+
+
+                            <RelativeLayout
+                                android:id="@+id/fleetBackground"
+                                android:layout_width="35sp"
+                                android:layout_height="35sp"
+                                android:layout_margin="3sp"
+                                android:background="@drawable/style_fleet">
+
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/AddStory"
+                                    android:layout_width="62sp"
+                                    android:layout_height="62sp"
+                                    android:layout_marginStart="5sp"
+                                    android:layout_marginTop="5sp"
+                                    android:layout_marginEnd="5sp"
+                                    android:layout_marginBottom="5sp"
+                                    android:src="@drawable/add_story" />
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/fleetUserName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Add Story"
+                                android:textColor="#FFFFFF"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/fleetRecycler"
+
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
 
             </LinearLayout>
 

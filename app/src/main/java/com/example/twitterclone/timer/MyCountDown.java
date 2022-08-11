@@ -31,7 +31,7 @@ public class MyCountDown extends CountDownTimer {
         isRunning = running;
     }
 
-    public MyCountDown(long millisInFuture, long countDownInterval, ProgressBar progressBar ) {
+    public MyCountDown(long millisInFuture, long countDownInterval, ProgressBar progressBar) {
         super(millisInFuture, countDownInterval);
         this.progressBar = progressBar;
 
@@ -52,6 +52,7 @@ public class MyCountDown extends CountDownTimer {
     @Override
     public void onFinish() {
         // i++;
+
 
         // onFinish();
         setCounter(getCounter() + 1);
