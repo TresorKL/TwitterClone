@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.twitterclone.Fleet.Fleet;
 import com.example.twitterclone.adapters.FleetAdapter;
 import com.example.twitterclone.adapters.TrendAdapter;
+import com.example.twitterclone.processor.Processor;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -107,7 +108,7 @@ public class HomeFragment extends Fragment {
 
         Drawable image = getResources().getDrawable(R.drawable.story);
         Drawable image2 = getResources().getDrawable(R.drawable.trezor);
-        Drawable image3 = getResources().getDrawable(R.drawable.profile);
+        Drawable image3 = getResources().getDrawable(R.drawable.ronaldo);
         Drawable image4 = getResources().getDrawable(R.drawable.ktl);
         List<Drawable> fleeImages = new ArrayList<>();
         fleeImages.add(image);
@@ -120,44 +121,47 @@ public class HomeFragment extends Fragment {
         fleetOne.setUserName("TresorKL");
         fleetOne.setFleetImages(fleeImages);
 
+
         Fleet fleetTwo = new Fleet();
         fleetTwo.setUserProfile(image);
         fleetTwo.setUserName("Enock");
+        List<Drawable> fleeImages2 = new ArrayList<>();
+        fleeImages2.add(image2);
+        fleeImages2.add(image3);
+        fleetTwo.setFleetImages(fleeImages2);
+
 
         Fleet fleetThree = new Fleet();
-        fleetThree.setUserProfile(image);
+        fleetThree.setUserProfile(image4);
         fleetThree.setUserName("David");
+        List<Drawable> fleeImages3 = new ArrayList<>();
+        fleeImages3.add(image4);
+        fleetThree.setFleetImages(fleeImages3);
 
 
         Fleet fleetFour = new Fleet();
-        fleetFour.setUserProfile(image2);
+        fleetFour.setUserProfile(image3);
         fleetFour.setUserName("Norbert");
-
+        List<Drawable> fleeImages4 = new ArrayList<>();
+        fleeImages4.add(image2);
+        fleeImages4.add(image3);
+        fleeImages4.add(image4);
+        fleetFour.setFleetImages(fleeImages4);
 
         List<Fleet> fleets = new ArrayList<>();
         fleets.add(fleetOne);
         fleets.add(fleetTwo);
-        fleets.add(fleetTwo);
-        fleets.add(fleetTwo);
-        fleets.add(fleetThree);
         fleets.add(fleetFour);
         fleets.add(fleetThree);
-        fleets.add(fleetFour);
-        fleets.add(fleetThree);
-        fleets.add(fleetFour);
 
 
         RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.fleetRecycler);
-//        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        //  layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        //  RecyclerView myList = (RecyclerView) findViewById(R.id.my_recycler_view);
 
 
         FleetAdapter adapter = new FleetAdapter(fleets, getContext(), getActivity().getWindowManager());
         myRecyclerView.setLayoutManager(layoutManager);
-        //myRecyclerView.setHasFixedSize(true);
-        // myRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
         myRecyclerView.setAdapter(adapter);
 
 
@@ -202,7 +206,8 @@ public class HomeFragment extends Fragment {
                 File f = new File(picturePath);
                 String imageName = f.getName();
 
-                uploadImage(imageName, imageUri);
+                Processor processor = new Processor(getContext());
+                processor.uploadImage(imageName, imageUri);
                 // store image
 
 
@@ -219,18 +224,5 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void uploadImage(String imageName, Uri imageUri) {
-
-        if(imageUri!=null){
-            StorageReference ref = FirebaseStorage.getInstance().getReference().child("fleets").child(imageName);
-
-            ref.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    Toast.makeText(getContext(), "Image successfully uploaded", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-    }
 
 }
