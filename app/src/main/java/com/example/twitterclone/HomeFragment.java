@@ -106,10 +106,20 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
+
+        Drawable userProfile = getResources().getDrawable(R.drawable.dynamic);
+
+        Fleet dynamicUser = new Fleet();
+        dynamicUser.setUserProfile(userProfile);
+        dynamicUser.setUserName("Your Story");
+
         Drawable image = getResources().getDrawable(R.drawable.story);
         Drawable image2 = getResources().getDrawable(R.drawable.trezor);
         Drawable image3 = getResources().getDrawable(R.drawable.ronaldo);
         Drawable image4 = getResources().getDrawable(R.drawable.ktl);
+
         List<Drawable> fleeImages = new ArrayList<>();
         fleeImages.add(image);
         fleeImages.add(image2);
@@ -148,17 +158,25 @@ public class HomeFragment extends Fragment {
         fleetFour.setFleetImages(fleeImages4);
 
         List<Fleet> fleets = new ArrayList<>();
+        fleets.add(dynamicUser);
         fleets.add(fleetOne);
         fleets.add(fleetTwo);
         fleets.add(fleetFour);
         fleets.add(fleetThree);
+
+        List<Fleet>validFleets=new ArrayList<>();
+        for (int i=0; i<fleets.size();i++){
+            if(fleets.get(i).fleetImages!=null){
+                validFleets.add(fleets.get(i));
+            }
+        }
 
 
         RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.fleetRecycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
 
-        FleetAdapter adapter = new FleetAdapter(fleets, getContext(), getActivity().getWindowManager());
+        FleetAdapter adapter = new FleetAdapter(validFleets, getContext(), getActivity().getWindowManager());
         myRecyclerView.setLayoutManager(layoutManager);
 
         myRecyclerView.setAdapter(adapter);
