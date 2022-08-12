@@ -144,7 +144,6 @@ public class HomeFragment extends Fragment {
         fleetFour.setUserName("Norbert");
         List<Drawable> fleeImages4 = new ArrayList<>();
         fleeImages4.add(image2);
-        fleeImages4.add(image3);
         fleeImages4.add(image4);
         fleetFour.setFleetImages(fleeImages4);
 
