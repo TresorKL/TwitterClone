@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -26,7 +27,12 @@ import android.widget.Toast;
 import com.example.twitterclone.Fleet.Fleet;
 import com.example.twitterclone.adapters.FleetAdapter;
 import com.example.twitterclone.adapters.TrendAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -196,6 +202,9 @@ public class HomeFragment extends Fragment {
                 File f = new File(picturePath);
                 String imageName = f.getName();
 
+                uploadImage(imageName, imageUri);
+                // store image
+
 
                 Toast.makeText(getContext(), "Successfully added: " + imageName, Toast.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
@@ -207,6 +216,20 @@ public class HomeFragment extends Fragment {
 
         } else {
             Toast.makeText(getContext(), "You haven't picked Image", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void uploadImage(String imageName, Uri imageUri) {
+
+        if(imageUri!=null){
+            StorageReference ref = FirebaseStorage.getInstance().getReference().child("fleets").child(imageName);
+
+            ref.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    Toast.makeText(getContext(), "Image successfully uploaded", Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
