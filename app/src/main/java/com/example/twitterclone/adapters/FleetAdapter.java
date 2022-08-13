@@ -60,6 +60,7 @@ public class FleetAdapter extends RecyclerView.Adapter<FleetAdapter.ViewHolder> 
         holder.userImage.setImageDrawable(fleets.get(position).userProfile);
         holder.userName.setText(fleets.get(position).getUserName());
 
+
         holder.fleetContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,78 +84,79 @@ public class FleetAdapter extends RecyclerView.Adapter<FleetAdapter.ViewHolder> 
                 profile.setImageDrawable(fleets.get(holder.getAdapterPosition()).getUserProfile());
 
 
-                Drawable fleetPost = fleets.get(holder.getAdapterPosition()).getFleetImages().get(0);
+                //Drawable fleetPost = fleets.get(holder.getAdapterPosition()).getFleetImages().get(0);
                 ImageView fleetImage = dialog.findViewById(R.id.post);
-                fleetImage.setImageDrawable(fleetPost);
+                //fleetImage.setImageDrawable(fleetPost);
 
                 List<Drawable> fleetPosts = fleets.get(holder.getAdapterPosition()).getFleetImages();
                 ProgressBar progressBar = dialog.findViewById(R.id.progress);
 
 
                 MyCountDown countDown = new MyCountDown(5000, 1000, progressBar);
-               fleetImage.setImageDrawable(fleets.get(holder.getAdapterPosition()).getFleetImages().get(0));
-                countDown.start();
+                if (!fleets.get(holder.getAdapterPosition()).getFleetImages().isEmpty()) {
+                    fleetImage.setImageDrawable(fleets.get(holder.getAdapterPosition()).getFleetImages().get(0));
+                    countDown.start();
+                }else {
+                    dialog.dismiss();
+                }
 
 
 
                 //dialog.dismiss();
-
+                //int post=0;
                 fleetImage.setOnClickListener(new View.OnClickListener() {
-                    int post=1;
+                    int post = 1;
+
                     @Override
                     public void onClick(View v) {
 
-                       if(post!=fleetPosts.size()) {
-                          // countDown.cancel();
-                           MyCountDown countDown = new MyCountDown(5000, 1000, progressBar);
-                           fleetImage.setImageDrawable(fleets.get(holder.getAdapterPosition()).getFleetImages().get(post++));
-                           countDown.cancel();
+                        if (post != fleetPosts.size()) {
+                            // countDown.cancel();
+                            MyCountDown countDown = new MyCountDown(5000, 1000, progressBar);
+                            fleetImage.setImageDrawable(fleets.get(holder.getAdapterPosition()).getFleetImages().get(post++));
+                            countDown.cancel();
                             countDown.start();
-
-                       }else {
-                           dialog.dismiss();
-                       }
+                            // post++;
+                        } else {
+                            dialog.dismiss();
+                        }
 
                     }
                 });
 
 
+                ImageButton dismiss = (ImageButton) dialog.findViewById(R.id.cancel);
+                dismiss.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
 
-            ImageButton dismiss = (ImageButton) dialog.findViewById(R.id.cancel);
-                dismiss.setOnClickListener(new View.OnClickListener()
-
-            {
-                @Override
-                public void onClick (View v){
-                dialog.dismiss();
             }
-            });
+        });
 
 
-        }
-    });
-
-
-}
+    }
 
     @Override
     public int getItemCount() {
         return fleets.size();
     }
 
-public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-    RelativeLayout fleetContent;
-    CircleImageView userImage;
-    TextView userName;
+        RelativeLayout fleetContent;
+        CircleImageView userImage;
+        TextView userName;
 
-    public ViewHolder(@NonNull View itemView) {
-        super(itemView);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
 
-        fleetContent = itemView.findViewById(R.id.fleetBackground);
-        userImage = itemView.findViewById(R.id.userImage);
-        userName = itemView.findViewById(R.id.fleetUserName);
+            fleetContent = itemView.findViewById(R.id.fleetBackground);
+            userImage = itemView.findViewById(R.id.userImage);
+            userName = itemView.findViewById(R.id.fleetUserName);
+        }
     }
-}
 }

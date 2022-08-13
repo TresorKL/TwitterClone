@@ -3,11 +3,14 @@ package com.example.twitterclone;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -15,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,55 +52,31 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class HomeFragment extends Fragment {
     CircleImageView menu;
+    SharedPreferences fleetsPref;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     CircleImageView addStoryBtn;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Fleet dynamicUser = new Fleet();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    List<Fleet> fleets = new ArrayList<>();
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.fleetRecycler);
+        List<Drawable> userImages = new ArrayList<>();
+        fleets.clear();
+        userImages.clear();
         DrawerLayout drawerLayout = view.findViewById(R.id.homeDrawer);
         menu = view.findViewById(R.id.user);
+
+        //----------------------------------
+        // Open sidebar
+        //----------------------------------
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,72 +88,35 @@ public class HomeFragment extends Fragment {
         });
 
 
-
-
         Drawable userProfile = getResources().getDrawable(R.drawable.dynamic);
 
-        Fleet dynamicUser = new Fleet();
+
+        Processor processor = new Processor(getContext());
+
         dynamicUser.setUserProfile(userProfile);
         dynamicUser.setUserName("Your Story");
+        processor.retrieveImage(userImages);
+        //userImages=mainP.retrieveFleets(fleetsPref);
 
-        Drawable image = getResources().getDrawable(R.drawable.story);
-        Drawable image2 = getResources().getDrawable(R.drawable.trezor);
-        Drawable image3 = getResources().getDrawable(R.drawable.ronaldo);
-        Drawable image4 = getResources().getDrawable(R.drawable.ktl);
+        //Toast.makeText(getContext(),userImages.get(0).toString(),Toast.LENGTH_LONG).show();
 
-        List<Drawable> fleeImages = new ArrayList<>();
-        fleeImages.add(image);
-        fleeImages.add(image2);
-        fleeImages.add(image3);
-        fleeImages.add(image4);
-
-        Fleet fleetOne = new Fleet();
-        fleetOne.setUserProfile(image2);
-        fleetOne.setUserName("TresorKL");
-        fleetOne.setFleetImages(fleeImages);
+        dynamicUser.setFleetImages(userImages);
 
 
-        Fleet fleetTwo = new Fleet();
-        fleetTwo.setUserProfile(image);
-        fleetTwo.setUserName("Enock");
-        List<Drawable> fleeImages2 = new ArrayList<>();
-        fleeImages2.add(image2);
-        fleeImages2.add(image3);
-        fleetTwo.setFleetImages(fleeImages2);
+        fleets = processor.getStaticFleets();
+        fleets.add(0,dynamicUser);
 
-
-        Fleet fleetThree = new Fleet();
-        fleetThree.setUserProfile(image4);
-        fleetThree.setUserName("David");
-        List<Drawable> fleeImages3 = new ArrayList<>();
-        fleeImages3.add(image4);
-        fleetThree.setFleetImages(fleeImages3);
-
-
-        Fleet fleetFour = new Fleet();
-        fleetFour.setUserProfile(image3);
-        fleetFour.setUserName("Norbert");
-        List<Drawable> fleeImages4 = new ArrayList<>();
-        fleeImages4.add(image2);
-        fleeImages4.add(image4);
-        fleetFour.setFleetImages(fleeImages4);
-
-        List<Fleet> fleets = new ArrayList<>();
-        fleets.add(dynamicUser);
-        fleets.add(fleetOne);
-        fleets.add(fleetTwo);
-        fleets.add(fleetFour);
-        fleets.add(fleetThree);
-
-        List<Fleet>validFleets=new ArrayList<>();
-        for (int i=0; i<fleets.size();i++){
-            if(fleets.get(i).fleetImages!=null){
-                validFleets.add(fleets.get(i));
+        List<Fleet> validFleets = new ArrayList<>();
+        for (int i = 0; i < fleets.size(); i++) {
+            if (fleets.get(i).fleetImages != null) {
+                //if(!fleets.get(i).fleetImages.isEmpty()) {
+                    validFleets.add(fleets.get(i));
+               // }
             }
         }
 
 
-        RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.fleetRecycler);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
 
@@ -191,6 +135,9 @@ public class HomeFragment extends Fragment {
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, 2);
 
+                // getActivity().finish();
+                startActivity(getActivity().getIntent());
+
 
             }
         });
@@ -208,7 +155,7 @@ public class HomeFragment extends Fragment {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContext().getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-
+                // Drawable imageD = new BitmapDrawable(getContext().getResources(), selectedImage);
 
                 ///-------------------------------------------------------
                 ///---------------EXTRACT IMAGE NAME -------------------
@@ -223,9 +170,37 @@ public class HomeFragment extends Fragment {
                 File f = new File(picturePath);
                 String imageName = f.getName();
 
+
                 Processor processor = new Processor(getContext());
+                ///-------------------------------------------------------
+                ///---------------UPLOAD FLEET IMAGES  -------------------
+                ///-------------------------------------------------------
+                List<Drawable> userImages = new ArrayList<>();
                 processor.uploadImage(imageName, imageUri);
-                // store image
+                processor.retrieveImage(userImages);
+                dynamicUser.setFleetImages(userImages);
+                fleets.set(0,dynamicUser);
+
+
+                List<Fleet> validFleets = new ArrayList<>();
+                for (int i = 0; i < fleets.size(); i++) {
+                    if (fleets.get(i).fleetImages != null) {
+                        //if(!fleets.get(i).fleetImages.isEmpty()) {
+                        validFleets.add(fleets.get(i));
+                        // }
+                    }
+                }
+
+                RecyclerView myRecyclerView = (RecyclerView)getView().findViewById(R.id.fleetRecycler);
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+
+                FleetAdapter adapter = new FleetAdapter(validFleets, getContext(), getActivity().getWindowManager());
+                myRecyclerView.setLayoutManager(layoutManager);
+
+                myRecyclerView.setAdapter(adapter);
+
 
 
                 Toast.makeText(getContext(), "Successfully added: " + imageName, Toast.LENGTH_LONG).show();

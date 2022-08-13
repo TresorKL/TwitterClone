@@ -33,10 +33,14 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     //CircleImageView menu;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
 //------------------------------------------------------------
         // customise status bar

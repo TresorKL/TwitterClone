@@ -62,36 +62,6 @@ public class MyCountDown extends CountDownTimer {
     }
 
 
-//               for (int counter = 0; counter < fleetPosts.size();counter++ ) {
-//                   int oldValue = counter;
-//                   if(counter==post) {
-//
-//                       int finalPost = counter;
-//                       new Handler().postDelayed(new Runnable() {
-//
-//
-//                           @Override
-//                           public void run() {
-//
-//                               // while (post < fleetPosts.size()) {
-//                               MyCountDown countDown = new MyCountDown(5000, 1000, progressBar);
-//                               fleetImage.setImageDrawable(fleets.get(holder.getAdapterPosition()).getFleetImages().get(finalPost));
-//
-//                               countDown.start();
-//
-//                               //  }
-//
-//                           }
-//
-//                       }, 5000);
-//                   }
-//                   counter++;
-//                  if(counter-oldValue>1){
-//                      counter=oldValue-1;
-//                  }
-//            }
-
-
     public int countPost() {
         return getCounter();
     }
