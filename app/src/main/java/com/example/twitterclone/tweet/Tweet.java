@@ -1,7 +1,5 @@
 package com.example.twitterclone.tweet;
 
-import android.graphics.drawable.Drawable;
-
 import java.sql.Date;
 
 public class Tweet {
@@ -9,7 +7,7 @@ public class Tweet {
     private String userName;
     private String tweetText;
     private String userProfileUrl;
-    private int tweetImgUrl;
+    private String tweetImgUrl;
     private int Id;
     private String tweetParentId;
     private Date dateOfCreation;
@@ -17,7 +15,7 @@ public class Tweet {
     public Tweet() {
     }
 
-    public Tweet(String userName, String tweetText, String userProfileUrl, int tweetImgUrl, int id, String tweetParentId, Date dateOfCreation) {
+    public Tweet(String userName, String tweetText, String userProfileUrl, String tweetImgUrl, int id, String tweetParentId, Date dateOfCreation) {
         this.userName = userName;
         this.tweetText = tweetText;
         this.userProfileUrl = userProfileUrl;
@@ -52,11 +50,11 @@ public class Tweet {
         this.userProfileUrl = userProfileUrl;
     }
 
-    public int getTweetImgUrl() {
+    public String getTweetImgUrl() {
         return tweetImgUrl;
     }
 
-    public void setTweetImgUrl(int tweetImgUrl) {
+    public void setTweetImgUrl(String tweetImgUrl) {
         this.tweetImgUrl = tweetImgUrl;
     }
 
