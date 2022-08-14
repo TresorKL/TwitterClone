@@ -1,4 +1,4 @@
-package com.example.twitterclone.Trend;
+package com.example.twitterclone.trend;
 
 public class Trend {
 

@@ -1,4 +1,4 @@
-package com.example.twitterclone.Fleet;
+package com.example.twitterclone.fleet;
 
 import android.graphics.drawable.Drawable;
 

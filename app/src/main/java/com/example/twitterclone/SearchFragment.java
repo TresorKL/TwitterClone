@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.twitterclone.Trend.Trend;
+import com.example.twitterclone.trend.Trend;
 import com.example.twitterclone.adapters.TrendAdapter;
 import com.google.android.material.navigation.NavigationView;
 

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.twitterclone.R;
-import com.example.twitterclone.Trend.Trend;
+import com.example.twitterclone.trend.Trend;
 
 public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.ViewHolder> {
 
