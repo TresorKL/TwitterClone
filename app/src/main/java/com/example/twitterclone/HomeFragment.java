@@ -18,15 +18,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.twitterclone.adapters.TweetAdapter;
 import com.example.twitterclone.fleet.Fleet;
 import com.example.twitterclone.adapters.FleetAdapter;
 import com.example.twitterclone.processor.Processor;
+import com.example.twitterclone.processor.RetrieveTweetTask;
+import com.example.twitterclone.tweet.Tweet;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,15 +55,15 @@ public class HomeFragment extends Fragment {
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     CircleImageView addStoryBtn;
     Fleet dynamicUser = new Fleet();
-
+    List<Drawable> userImages = new ArrayList<>();
     List<Fleet> fleets = new ArrayList<>();
-
+    Processor processor = new Processor(getContext(), userImages);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.fleetRecycler);
+
         List<Drawable> userImages = new ArrayList<>();
         fleets.clear();
         userImages.clear();
@@ -77,11 +87,11 @@ public class HomeFragment extends Fragment {
         Drawable userProfile = getResources().getDrawable(R.drawable.dynamic);
 
 
-        Processor processor = new Processor(getContext());
+        Processor processor = new Processor(getContext(), userImages);
 
         dynamicUser.setUserProfile(userProfile);
         dynamicUser.setUserName("Your Story");
-        processor.retrieveImage(userImages);
+         processor.retrieveImage();
         //userImages=mainP.retrieveFleets(fleetsPref);
 
         //Toast.makeText(getContext(),userImages.get(0).toString(),Toast.LENGTH_LONG).show();
@@ -90,17 +100,18 @@ public class HomeFragment extends Fragment {
 
 
         fleets = processor.getStaticFleets();
-        fleets.add(0,dynamicUser);
+        fleets.add(0, dynamicUser);
 
         List<Fleet> validFleets = new ArrayList<>();
         for (int i = 0; i < fleets.size(); i++) {
             if (fleets.get(i).fleetImages != null) {
                 //if(!fleets.get(i).fleetImages.isEmpty()) {
-                    validFleets.add(fleets.get(i));
-               // }
+                validFleets.add(fleets.get(i));
+                // }
             }
         }
 
+        RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.fleetRecycler);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -110,6 +121,64 @@ public class HomeFragment extends Fragment {
         myRecyclerView.setLayoutManager(layoutManager);
 
         myRecyclerView.setAdapter(adapter);
+
+
+
+     List<Tweet>tweetList=new ArrayList<>();
+
+       // RecyclerView TweetRecycler = (RecyclerView) view.findViewById(R.id.tweetRecycler);
+        //new FetchTweet(tweetList,getContext(), view).execute();
+
+       //  processor.getTweets(tweetList);
+
+      Tweet tweet =new Tweet();
+        tweet.setId(1);
+        tweet.setUserName("Tresor");
+        tweet.setTweetText("HELLO TWITTER");
+        tweet.setUserProfileUrl("https://firebasestorage.googleapis.com/v0/b/twiterclone-52eea.appspot.com/o/fleets%2FIMG_1855.JPG?alt=media&token=5f01393c-22c9-4f77-a26a-3cc9c7113408");
+
+        tweet.setTweetImgUrl("https://firebasestorage.googleapis.com/v0/b/twiterclone-52eea.appspot.com/o/fleets%2FIMG_1855.JPG?alt=media&token=5f01393c-22c9-4f77-a26a-3cc9c7113408");
+
+       // RecyclerView tweetRecycler = (RecyclerView) view.findViewById(R.id.tweetRecycler);
+//
+//
+//
+        tweetList=processor.getTweets(tweetList);
+
+           tweetList.add(tweet);
+
+
+        RecyclerView tweetRecycler = (RecyclerView) view.findViewById(R.id.tweetRecycler);
+
+        TweetAdapter tweetAdapter = new TweetAdapter(tweetList, getContext());
+
+        tweetRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        tweetRecycler.setAdapter(tweetAdapter);
+
+        Log.d("TWEET LIST: ", "TWEETS AVAILABLE NOW!!!!!!!!!!!!!!!!!!!!!");
+
+
+//        tweetList.add(0,tweet);
+
+       // Log.d("TWEET LIST: ", "TWEETS AVAILABLE NOW!!!!!!!!!!!!!!!!!!!!!");
+//
+//        TweetAdapter tweetAdapter = new TweetAdapter(tweetList, getContext());
+//
+//        tweetRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+//        tweetRecycler.setAdapter(tweetAdapter);
+       // Toast.makeText(getContext(), "TWEET AVAILABLE", Toast.LENGTH_LONG).show();
+
+       // LinearLayoutManager tweetLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+
+        //RecyclerView TweetRecycler = (RecyclerView) view.findViewById(R.id.tweetRecycler);
+//        TweetAdapter tweetAdapter = new TweetAdapter(tweetList, getContext());
+//
+//
+//
+//        TweetRecycler.setAdapter(tweetAdapter);
+//
+//        TweetRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
 
         // AddStoryRESULT_LOAD_IMG
@@ -130,6 +199,7 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
 
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
@@ -157,27 +227,24 @@ public class HomeFragment extends Fragment {
                 String imageName = f.getName();
 
 
-                Processor processor = new Processor(getContext());
+                Processor processor = new Processor(getContext(), userImages);
                 ///-------------------------------------------------------
                 ///---------------UPLOAD FLEET IMAGES  -------------------
                 ///-------------------------------------------------------
                 List<Drawable> userImages = new ArrayList<>();
                 processor.uploadImage(imageName, imageUri);
-                processor.retrieveImage(userImages);
-                dynamicUser.setFleetImages(userImages);
-                fleets.set(0,dynamicUser);
 
 
                 List<Fleet> validFleets = new ArrayList<>();
                 for (int i = 0; i < fleets.size(); i++) {
                     if (fleets.get(i).fleetImages != null) {
-                        //if(!fleets.get(i).fleetImages.isEmpty()) {
-                        validFleets.add(fleets.get(i));
-                        // }
+                        if (!fleets.get(i).fleetImages.isEmpty()) {
+                            validFleets.add(fleets.get(i));
+                        }
                     }
                 }
 
-                RecyclerView myRecyclerView = (RecyclerView)getView().findViewById(R.id.fleetRecycler);
+                RecyclerView myRecyclerView = (RecyclerView) getView().findViewById(R.id.fleetRecycler);
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
@@ -188,8 +255,10 @@ public class HomeFragment extends Fragment {
                 myRecyclerView.setAdapter(adapter);
 
 
+                //tweet_recycler//
 
-                Toast.makeText(getContext(), "Successfully added: " + imageName, Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(getContext(), "Successfully added: " + imageName, Toast.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();

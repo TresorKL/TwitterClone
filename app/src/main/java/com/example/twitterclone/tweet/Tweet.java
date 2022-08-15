@@ -9,20 +9,20 @@ public class Tweet {
     private String userProfileUrl;
     private String tweetImgUrl;
     private int Id;
-    private String tweetParentId;
-    private Date dateOfCreation;
+    private int tweetParentId;
+
 
     public Tweet() {
     }
 
-    public Tweet(String userName, String tweetText, String userProfileUrl, String tweetImgUrl, int id, String tweetParentId, Date dateOfCreation) {
+    public Tweet(String userName, String tweetText, String userProfileUrl, String tweetImgUrl, int id, int tweetParentId, Date dateOfCreation) {
         this.userName = userName;
         this.tweetText = tweetText;
         this.userProfileUrl = userProfileUrl;
         this.tweetImgUrl = tweetImgUrl;
         Id = id;
         this.tweetParentId = tweetParentId;
-        this.dateOfCreation = dateOfCreation;
+
     }
 
 
@@ -66,19 +66,12 @@ public class Tweet {
         Id = id;
     }
 
-    public String getTweetParentId() {
+    public int getTweetParentId() {
         return tweetParentId;
     }
 
-    public void setTweetParentId(String tweetParentId) {
+    public void setTweetParentId(int tweetParentId) {
         this.tweetParentId = tweetParentId;
     }
 
-    public Date getDateOfCreation() {
-        return dateOfCreation;
-    }
-
-    public void setDateOfCreation(Date dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
-    }
 }

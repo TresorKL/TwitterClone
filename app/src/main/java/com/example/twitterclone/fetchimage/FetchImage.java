@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 public class FetchImage extends Thread {
 
@@ -33,10 +34,11 @@ public class FetchImage extends Thread {
                 progressDialog.setMessage("Message loading");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
+                // load image from url
+                Picasso.with(context).load(url).into(imageView);
             }
         });
-        // load image from url
-        Glide.with(context).load(url).into(imageView);
+
 
         handler.post(new Runnable() {
             @Override

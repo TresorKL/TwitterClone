@@ -10,12 +10,19 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.twitterclone.FetchTweet;
 import com.example.twitterclone.fleet.Fleet;
 import com.example.twitterclone.R;
+import com.example.twitterclone.tweet.Tweet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
@@ -28,77 +35,25 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Processor {
 
     Context context;
+    List<Drawable> userImages;
 
 
-    public Processor(Context context) {
+
+    public Processor(Context context, List<Drawable> userImages) {
         this.context = context;
+        this.userImages = userImages;
 
     }
 
 
-    public void retrieveImage(List<Drawable> userImages) {
-        StorageReference listRef = FirebaseStorage.getInstance().getReference().child("fleets/");
+    public void retrieveImage() {
 
-
-        listRef.listAll()
-                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
-                    @Override
-                    public void onSuccess(ListResult listResult) {
-                        if (listResult != null) {
-                            for (StorageReference prefix : listResult.getPrefixes()) {
-                                // All the prefixes under listRef.
-                                // You may call listAll() recursively on them.
-                            }
-                            int i = 0;
-
-                            for (StorageReference item : listResult.getItems()) {
-
-                                Date currentTime = Calendar.getInstance().getTime();
-
-                                try {//currentTime.toString()
-                                    File fileTemp = File.createTempFile(currentTime.toString(), ".jpg");
-                                    item.getFile(fileTemp).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
-                                            Bitmap bitmapImage = BitmapFactory.decodeFile(fileTemp.getAbsolutePath());
-                                            Drawable image = new BitmapDrawable(context.getResources(), bitmapImage);
-                                            userImages.add(image);
-
-                                            // Drawable image= fileTemp;
-
-
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.println(Log.ASSERT, "", "Process failed");
-                                        }
-                                    });
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                i++;
-
-                                // All the items under listRef.
-                            }
-                            Log.println(Log.ASSERT, "", i + "ITEM FOUND");
-                        } else {
-                            Log.println(Log.ASSERT, "", "LIST NOT FOUND");
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Uh-oh, an error occurred!
-                    }
-                });
-
-
+        new RetrieveFleetTask(context, userImages).execute();
     }
 
 
@@ -111,6 +66,7 @@ public class Processor {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
+                    new RetrieveFleetTask(context, userImages).execute();
 
                 }
             });
@@ -119,10 +75,9 @@ public class Processor {
     }
 
 
+    public List<Fleet> getStaticFleets() {
 
-    public List<Fleet> getStaticFleets(){
-
-        List<Fleet>fleets = new ArrayList<>();
+        List<Fleet> fleets = new ArrayList<>();
 
         Drawable image = context.getResources().getDrawable(R.drawable.story);
         Drawable image2 = context.getResources().getDrawable(R.drawable.trezor);
@@ -166,7 +121,6 @@ public class Processor {
         fleetFour.setFleetImages(fleeImages4);
 
 
-
         fleets.add(fleetOne);
         fleets.add(fleetTwo);
         fleets.add(fleetFour);
@@ -175,5 +129,83 @@ public class Processor {
         return fleets;
     }
 
+    public List<Tweet> getTweets( List<Tweet>tweetList) {
+
+
+        // new FetchTweet(tweetList).execute();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Tweets");
+
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        //Get map of users in datasnapshot
+                       collectTweets((Map<String, Object>) dataSnapshot.getValue(),tweetList);
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //handle databaseError
+                    }
+                });
+
+        return tweetList;
+    }
+
+
+    private   void collectTweets(Map<String, Object> value, List<Tweet>tweetList) {
+
+
+        // value.get("id");
+        for (Map.Entry<String, Object> tweetEntry : value.entrySet()) {
+            Tweet tweet = new Tweet();
+            // Log.d("DATA FOUND: ",tweetEntry.getValue().toString());
+            Map<String, String> tweetData = (Map<String, String>) tweetEntry.getValue();
+
+            for (Map.Entry<String, String> dataValue : tweetData.entrySet()) {
+
+
+                if (dataValue.getKey().equals("id")) {
+                    String strValue = String.valueOf(dataValue.getValue());
+                    if (!strValue.toString().equals("")) {
+                        int id = Integer.parseInt(strValue);
+                        tweet.setId(id);
+                    }
+
+                } else if (dataValue.getKey().equals("parentId")) {
+                    String strValue = String.valueOf(dataValue.getValue());
+                    if (!strValue.equals("")) {
+                        int parentId = Integer.parseInt(strValue);
+                        tweet.setTweetParentId(parentId);
+                    }
+
+
+                } else if (dataValue.getKey().equals("tweetImgUrl")) {
+                    tweet.setTweetImgUrl(dataValue.getValue());
+                } else if (dataValue.getKey().equals("tweetText")) {
+                    tweet.setTweetText(dataValue.getValue());
+                } else if (dataValue.getKey().equals("userProfile")) {
+                    tweet.setUserProfileUrl(dataValue.getValue());
+                } else if (dataValue.getKey().equals("username")) {
+
+                    tweet.setUserName(dataValue.getValue());
+                }
+
+
+            }
+
+            tweetList.add(tweet);
+            // Log.d("TWEET LIST: ", "TWEETS AVAILABLE NOW!!!!!!!!!!!!!!!!!!!!!");
+        }
+
+        for (int i = 0; i < tweetList.size(); i++) {
+            Log.d("SIZE LIST: ", tweetList.get(i).getUserName() + "!!!!!!!!!!!!!!!!!!!!!");
+        }
+
+
+    }
 
 }

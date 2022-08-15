@@ -121,7 +121,6 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/fleetRecycler"
 
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -129,16 +128,24 @@
                     </LinearLayout>
 
 
+
+
+
                 </androidx.core.widget.NestedScrollView>
 
-
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tweet_recycler"
+
+                    android:id="@+id/tweetRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                    />
+
+
 
             </LinearLayout>
+
+
 
 
         </RelativeLayout>
