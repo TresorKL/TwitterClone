@@ -16,6 +16,7 @@
         <entry key="app/src/main/res/drawable/style_space.xml" value="0.2175" />
         <entry key="app/src/main/res/drawable/style_space2.xml" value="0.2175" />
         <entry key="app/src/main/res/drawable/style_space3.xml" value="0.2045" />
+        <entry key="app/src/main/res/drawable/style_tweetbtn_disable.xml" value="0.2045" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21937321937321938" />
         <entry key="app/src/main/res/layout/feelt_row.xml" value="0.39809782608695654" />
         <entry key="app/src/main/res/layout/fleet_dialog.xml" value="0.39809782608695654" />

@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -21,11 +22,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -65,6 +69,10 @@ public class HomeFragment extends Fragment {
     List<Drawable> userImages = new ArrayList<>();
     List<Fleet> fleets = new ArrayList<>();
     List<Tweet> tweetList = new ArrayList<>();
+    int imageIdentifier=0;
+    Dialog dialog;
+    ImageView pickPicture;
+    TextView tweetText;
 
 
     @Override
@@ -72,6 +80,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        dialog  = new Dialog(getContext());
+        dialog.setContentView(R.layout.post_tweet_dialog);
+        pickPicture=dialog.findViewById(R.id.tweetPicture);
 
         // list of fleetsImage of the current user
         List<Drawable> userImages = new ArrayList<>();
@@ -174,8 +185,7 @@ public class HomeFragment extends Fragment {
         postTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new Dialog(getContext());
-                dialog.setContentView(R.layout.post_tweet_dialog);
+
                 dialog.show();
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -186,6 +196,7 @@ public class HomeFragment extends Fragment {
                 cancelTweet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        pickPicture.setImageDrawable(null);
                         dialog.dismiss();
                     }
                 });
@@ -195,9 +206,66 @@ public class HomeFragment extends Fragment {
                 pickPicture.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        imageIdentifier=1;
                         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                         photoPickerIntent.setType("image/*");
                         startActivityForResult(photoPickerIntent, 2);
+                    }
+                });
+
+
+                Drawable disabledBtn= getResources().getDrawable(R.drawable.style_tweetbtn_disable);
+                Drawable enabledBtn= getResources().getDrawable(R.drawable.style_posttweet_btn);
+
+
+                // disable button when tweet has not text
+                Button sendTweet= dialog.findViewById(R.id.sendTweet);
+                sendTweet.setBackground(disabledBtn);
+                sendTweet.setEnabled(false);
+
+                tweetText=dialog.findViewById(R.id.tweetText);
+
+                tweetText.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        if(s.toString().trim().length()==0){
+                            sendTweet.setBackground(disabledBtn);
+                            sendTweet.setEnabled(false);
+                        } else {
+                            sendTweet.setBackground(enabledBtn);
+                            sendTweet.setEnabled(true);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count,
+                                                  int after) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                });
+
+
+
+
+
+                sendTweet.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String tweetTextStr;
+
+
+                        Toast.makeText(getContext(), "SEND TWEEEET: ", Toast.LENGTH_LONG).show();
+
+
                     }
                 });
 
@@ -206,17 +274,20 @@ public class HomeFragment extends Fragment {
         });
 
 
+
         // AddStoryRESULT_LOAD_IMG
         addStoryBtn = view.findViewById(R.id.AddStory);
         addStoryBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
+                imageIdentifier=0;
                 startActivityForResult(photoPickerIntent, 2);
 
                 // getActivity().finish();
-                startActivity(getActivity().getIntent());
+                //startActivity(getActivity().getIntent());
 
 
             }
@@ -224,6 +295,11 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
+
+
+
+
 
 
     @Override
@@ -236,7 +312,7 @@ public class HomeFragment extends Fragment {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContext().getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                // Drawable imageD = new BitmapDrawable(getContext().getResources(), selectedImage);
+                  Drawable imageD = new BitmapDrawable(getContext().getResources(), selectedImage);
 
                 ///-------------------------------------------------------
                 ///---------------EXTRACT IMAGE NAME -------------------
@@ -250,6 +326,9 @@ public class HomeFragment extends Fragment {
                 cursor.close();
                 File f = new File(picturePath);
                 String imageName = f.getName();
+
+
+                if(imageIdentifier==0){
 
 
                 Processor processor = new Processor(getContext(), userImages);
@@ -279,6 +358,14 @@ public class HomeFragment extends Fragment {
 
                 myRecyclerView.setAdapter(adapter);
 
+                }else{
+
+                   // make the selected image available in the post tweet dialog
+                    Processor processor = new Processor(getContext(), userImages);
+                    processor.setTweetImage(imageD,pickPicture);
+
+                }
+
 
                 //Toast.makeText(getContext(), "Successfully added: " + imageName, Toast.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
@@ -289,6 +376,7 @@ public class HomeFragment extends Fragment {
             }
 
         } else {
+
             Toast.makeText(getContext(), "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
     }

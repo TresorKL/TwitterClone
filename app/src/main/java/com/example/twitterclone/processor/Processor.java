@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -43,12 +44,12 @@ public class Processor {
     List<Drawable> userImages;
 
 
-
     public Processor(Context context, List<Drawable> userImages) {
         this.context = context;
         this.userImages = userImages;
 
     }
+
 
 
     public void retrieveImage() {
@@ -129,7 +130,7 @@ public class Processor {
         return fleets;
     }
 
-    public List<Tweet> getTweets( List<Tweet>tweetList) {
+    public List<Tweet> getTweets(List<Tweet> tweetList) {
 
 
         // new FetchTweet(tweetList).execute();
@@ -141,7 +142,7 @@ public class Processor {
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         //Get map of users in datasnapshot
-                       collectTweets((Map<String, Object>) dataSnapshot.getValue(),tweetList);
+                        collectTweets((Map<String, Object>) dataSnapshot.getValue(), tweetList);
 
 
                     }
@@ -156,7 +157,7 @@ public class Processor {
     }
 
 
-    private   void collectTweets(Map<String, Object> value, List<Tweet>tweetList) {
+    private void collectTweets(Map<String, Object> value, List<Tweet> tweetList) {
 
         tweetList.clear();
         // value.get("id");
@@ -201,7 +202,13 @@ public class Processor {
         }
 
 
+    }
 
+    public void setTweetImage(Drawable imageD, ImageView imageView){
+
+        imageView.setImageDrawable(imageD);
     }
 
 }
+
+
