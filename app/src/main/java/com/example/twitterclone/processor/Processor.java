@@ -158,7 +158,7 @@ public class Processor {
 
     private   void collectTweets(Map<String, Object> value, List<Tweet>tweetList) {
 
-
+        tweetList.clear();
         // value.get("id");
         for (Map.Entry<String, Object> tweetEntry : value.entrySet()) {
             Tweet tweet = new Tweet();
@@ -166,7 +166,6 @@ public class Processor {
             Map<String, String> tweetData = (Map<String, String>) tweetEntry.getValue();
 
             for (Map.Entry<String, String> dataValue : tweetData.entrySet()) {
-
 
                 if (dataValue.getKey().equals("id")) {
                     String strValue = String.valueOf(dataValue.getValue());
@@ -198,12 +197,9 @@ public class Processor {
             }
 
             tweetList.add(tweet);
-            // Log.d("TWEET LIST: ", "TWEETS AVAILABLE NOW!!!!!!!!!!!!!!!!!!!!!");
+
         }
 
-        for (int i = 0; i < tweetList.size(); i++) {
-            Log.d("SIZE LIST: ", tweetList.get(i).getUserName() + "!!!!!!!!!!!!!!!!!!!!!");
-        }
 
 
     }

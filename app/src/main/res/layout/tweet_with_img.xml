@@ -2,10 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tweet_img"
     android:layout_width="match_parent"
+    android:layout_marginTop="15sp"
     android:layout_height="wrap_content"
     android:background="@color/black">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,5 +106,19 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <View
+            style="@style/Divider"
+            android:background="#737373"
+
+
+            />
+    </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

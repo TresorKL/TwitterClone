@@ -2,11 +2,14 @@ package com.example.twitterclone;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,9 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.twitterclone.adapters.TweetAdapter;
@@ -50,26 +57,32 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class HomeFragment extends Fragment {
+
+
     CircleImageView menu;
-    SharedPreferences fleetsPref;
-    RecyclerView.LayoutManager RecyclerViewLayoutManager;
-    CircleImageView addStoryBtn;
+    CircleImageView addStoryBtn, postTweet;
     Fleet dynamicUser = new Fleet();
     List<Drawable> userImages = new ArrayList<>();
     List<Fleet> fleets = new ArrayList<>();
-    Processor processor = new Processor(getContext(), userImages);
+    List<Tweet> tweetList = new ArrayList<>();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // list of fleetsImage of the current user
         List<Drawable> userImages = new ArrayList<>();
+
+        // clear every everything when this fragment is refreshed
         fleets.clear();
         userImages.clear();
+
+
         DrawerLayout drawerLayout = view.findViewById(R.id.homeDrawer);
         menu = view.findViewById(R.id.user);
-
         //----------------------------------
         // Open sidebar
         //----------------------------------
@@ -84,24 +97,23 @@ public class HomeFragment extends Fragment {
         });
 
 
+        // set current user manually
         Drawable userProfile = getResources().getDrawable(R.drawable.dynamic);
-
-
         Processor processor = new Processor(getContext(), userImages);
-
         dynamicUser.setUserProfile(userProfile);
         dynamicUser.setUserName("Your Story");
-         processor.retrieveImage();
-        //userImages=mainP.retrieveFleets(fleetsPref);
-
-        //Toast.makeText(getContext(),userImages.get(0).toString(),Toast.LENGTH_LONG).show();
-
+        // retrieve fleetsImage
+        processor.retrieveImage();
+        //set images
         dynamicUser.setFleetImages(userImages);
 
-
+        // get static fleets from processor class
         fleets = processor.getStaticFleets();
+
+        // add current user fleets
         fleets.add(0, dynamicUser);
 
+        // filter valid fleets
         List<Fleet> validFleets = new ArrayList<>();
         for (int i = 0; i < fleets.size(); i++) {
             if (fleets.get(i).fleetImages != null) {
@@ -111,11 +123,10 @@ public class HomeFragment extends Fragment {
             }
         }
 
+        // optimize recycler view with adapter
         RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.fleetRecycler);
 
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-
 
         FleetAdapter adapter = new FleetAdapter(validFleets, getContext(), getActivity().getWindowManager());
         myRecyclerView.setLayoutManager(layoutManager);
@@ -123,15 +134,10 @@ public class HomeFragment extends Fragment {
         myRecyclerView.setAdapter(adapter);
 
 
+        //tweetList.clear();
 
-     List<Tweet>tweetList=new ArrayList<>();
-
-       // RecyclerView TweetRecycler = (RecyclerView) view.findViewById(R.id.tweetRecycler);
-        //new FetchTweet(tweetList,getContext(), view).execute();
-
-       //  processor.getTweets(tweetList);
-
-      Tweet tweet =new Tweet();
+        // create static tweet
+        Tweet tweet = new Tweet();
         tweet.setId(1);
         tweet.setUserName("Tresor");
         tweet.setTweetText("HELLO TWITTER");
@@ -139,46 +145,65 @@ public class HomeFragment extends Fragment {
 
         tweet.setTweetImgUrl("https://firebasestorage.googleapis.com/v0/b/twiterclone-52eea.appspot.com/o/fleets%2FIMG_1855.JPG?alt=media&token=5f01393c-22c9-4f77-a26a-3cc9c7113408");
 
-       // RecyclerView tweetRecycler = (RecyclerView) view.findViewById(R.id.tweetRecycler);
-//
-//
-//
-        tweetList=processor.getTweets(tweetList);
 
-           tweetList.add(tweet);
+        // get dynamic fleets from firebase
+        tweetList = processor.getTweets(tweetList);
 
+        // tweetList.add(tweet);
 
+        // optimize flexible recycler view with adapter
         RecyclerView tweetRecycler = (RecyclerView) view.findViewById(R.id.tweetRecycler);
+
 
         TweetAdapter tweetAdapter = new TweetAdapter(tweetList, getContext());
 
         tweetRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         tweetRecycler.setAdapter(tweetAdapter);
 
-        Log.d("TWEET LIST: ", "TWEETS AVAILABLE NOW!!!!!!!!!!!!!!!!!!!!!");
+
+        tweetRecycler.getRecycledViewPool().clear();
+        // tweetAdapter.notifyDataSetChanged();
+
+        //Log.d("TWEET LIST: ", "TWEETS AVAILABLE NOW!!!!!!!!!!!!!!!!!!!!!");
+
+        //tweetAdapter.setTweetList(tweetList);
+
+        // tweetAdapter.notifyDataSetChanged();
+        //POST TWEET
+        postTweet = view.findViewById(R.id.postTweet);
+        postTweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.post_tweet_dialog);
+                dialog.show();
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dialog.getWindow().setGravity(Gravity.TOP);
+
+                TextView cancelTweet = dialog.findViewById(R.id.cancelTweet);
+                cancelTweet.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
 
-//        tweetList.add(0,tweet);
+                ImageButton pickPicture = dialog.findViewById(R.id.pickPicture);
+                pickPicture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                        photoPickerIntent.setType("image/*");
+                        startActivityForResult(photoPickerIntent, 2);
+                    }
+                });
 
-       // Log.d("TWEET LIST: ", "TWEETS AVAILABLE NOW!!!!!!!!!!!!!!!!!!!!!");
-//
-//        TweetAdapter tweetAdapter = new TweetAdapter(tweetList, getContext());
-//
-//        tweetRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-//        tweetRecycler.setAdapter(tweetAdapter);
-       // Toast.makeText(getContext(), "TWEET AVAILABLE", Toast.LENGTH_LONG).show();
 
-       // LinearLayoutManager tweetLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-
-        //RecyclerView TweetRecycler = (RecyclerView) view.findViewById(R.id.tweetRecycler);
-//        TweetAdapter tweetAdapter = new TweetAdapter(tweetList, getContext());
-//
-//
-//
-//        TweetRecycler.setAdapter(tweetAdapter);
-//
-//        TweetRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-
+            }
+        });
 
 
         // AddStoryRESULT_LOAD_IMG
@@ -253,9 +278,6 @@ public class HomeFragment extends Fragment {
                 myRecyclerView.setLayoutManager(layoutManager);
 
                 myRecyclerView.setAdapter(adapter);
-
-
-                //tweet_recycler//
 
 
                 //Toast.makeText(getContext(), "Successfully added: " + imageName, Toast.LENGTH_LONG).show();

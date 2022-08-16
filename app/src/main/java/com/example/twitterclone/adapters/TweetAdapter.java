@@ -32,6 +32,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         this.context = context;
     }
 
+
+    public List<Tweet> getTweetList() {
+        return tweetList;
+    }
+
+    public void setTweetList(List<Tweet> tweetList) {
+        this.tweetList = tweetList;
+    }
+
     @NonNull
     @Override
     public TweetAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -60,7 +69,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tweetText.setText(tweetList.get(position).getTweetText());
 
         if (!tweetList.get(position).getTweetImgUrl().isEmpty()) {
-            //new FetchImage(tweetList.get(position).getTweetImgUrl(),holder.tweetProfile,context).start();
+           // new FetchImage(tweetList.get(position).getTweetImgUrl(),holder.tweetProfile,context).start();
            Picasso.with(context).load(tweetList.get(position).getTweetImgUrl()).into(holder.tweetImage);
         }
 
@@ -97,7 +106,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tweetProfile = itemView.findViewById(R.id.tweetProfile);
             tweetText = itemView.findViewById(R.id.tweetText);
             userName = itemView.findViewById(R.id.tweetUserName);
-            Toast.makeText(context, "ADAPTER READY NOEW!!!!", Toast.LENGTH_LONG).show();
 
         }
     }
