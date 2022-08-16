@@ -41,6 +41,7 @@ import com.example.twitterclone.adapters.FleetAdapter;
 import com.example.twitterclone.processor.Processor;
 import com.example.twitterclone.processor.RetrieveTweetTask;
 import com.example.twitterclone.tweet.Tweet;
+import com.example.twitterclone.tweet.TweetProcessor;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,6 +73,9 @@ public class HomeFragment extends Fragment {
     int imageIdentifier=0;
     Dialog dialog;
     ImageView pickPicture;
+    String tweetImageName;
+    Uri tweetImageUri;
+
     TextView tweetText;
 
 
@@ -87,7 +91,9 @@ public class HomeFragment extends Fragment {
         // list of fleetsImage of the current user
         List<Drawable> userImages = new ArrayList<>();
 
+        //---------------------------------------------------
         // clear every everything when this fragment is refreshed
+        //---------------------------------------------------
         fleets.clear();
         userImages.clear();
 
@@ -134,7 +140,9 @@ public class HomeFragment extends Fragment {
             }
         }
 
+        //---------------------------------------------------
         // optimize recycler view with adapter
+        //---------------------------------------------------
         RecyclerView myRecyclerView = (RecyclerView) view.findViewById(R.id.fleetRecycler);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -147,7 +155,9 @@ public class HomeFragment extends Fragment {
 
         //tweetList.clear();
 
+        //---------------------------------------------------
         // create static tweet
+        //---------------------------------------------------
         Tweet tweet = new Tweet();
         tweet.setId(1);
         tweet.setUserName("Tresor");
@@ -157,12 +167,16 @@ public class HomeFragment extends Fragment {
         tweet.setTweetImgUrl("https://firebasestorage.googleapis.com/v0/b/twiterclone-52eea.appspot.com/o/fleets%2FIMG_1855.JPG?alt=media&token=5f01393c-22c9-4f77-a26a-3cc9c7113408");
 
 
+        //---------------------------------------------------
         // get dynamic fleets from firebase
+        //---------------------------------------------------
         tweetList = processor.getTweets(tweetList);
 
-        // tweetList.add(tweet);
+       // tweetList.add(tweet);
 
+        //---------------------------------------------------
         // optimize flexible recycler view with adapter
+        //---------------------------------------------------
         RecyclerView tweetRecycler = (RecyclerView) view.findViewById(R.id.tweetRecycler);
 
 
@@ -173,14 +187,11 @@ public class HomeFragment extends Fragment {
 
 
         tweetRecycler.getRecycledViewPool().clear();
-        // tweetAdapter.notifyDataSetChanged();
 
-        //Log.d("TWEET LIST: ", "TWEETS AVAILABLE NOW!!!!!!!!!!!!!!!!!!!!!");
 
-        //tweetAdapter.setTweetList(tweetList);
-
-        // tweetAdapter.notifyDataSetChanged();
+        //---------------------------------------------------
         //POST TWEET
+        //---------------------------------------------------
         postTweet = view.findViewById(R.id.postTweet);
         postTweet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,13 +229,16 @@ public class HomeFragment extends Fragment {
                 Drawable enabledBtn= getResources().getDrawable(R.drawable.style_posttweet_btn);
 
 
-                // disable button when tweet has not text
+
                 Button sendTweet= dialog.findViewById(R.id.sendTweet);
                 sendTweet.setBackground(disabledBtn);
                 sendTweet.setEnabled(false);
 
                 tweetText=dialog.findViewById(R.id.tweetText);
 
+                //---------------------------------------------------
+                // disable sendTweet button when tweet has not text
+                //---------------------------------------------------
                 tweetText.addTextChangedListener(new TextWatcher() {
 
                     @Override
@@ -260,11 +274,25 @@ public class HomeFragment extends Fragment {
                 sendTweet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String tweetTextStr;
+                        Tweet newTweet=new Tweet();
+                         String tweetStr=tweetText.getText().toString();
+                        //tweetImageName=imageName;
+                       // tweetImageUri
+                        TweetProcessor tweetProcessor = new TweetProcessor(tweetStr, tweetImageName, tweetImageUri,dialog);
+                        if(tweetImageUri!=null) {
+
+                            tweetProcessor.storeAndFetchImageUrl();
+
+                            tweetImageUri = null;
+                            tweetImageName = null;
+                            Toast.makeText(getContext(), "TWEET POSTED", Toast.LENGTH_LONG).show();
 
 
-                        Toast.makeText(getContext(), "SEND TWEEEET: ", Toast.LENGTH_LONG).show();
+                        }else{
+                            tweetProcessor.postSimpleTweet();
+                            Toast.makeText(getContext(), "TWEET POSTED", Toast.LENGTH_LONG).show();
 
+                        }
 
                     }
                 });
@@ -275,7 +303,9 @@ public class HomeFragment extends Fragment {
 
 
 
+        //---------------------------------------------------
         // AddStoryRESULT_LOAD_IMG
+        //---------------------------------------------------
         addStoryBtn = view.findViewById(R.id.AddStory);
         addStoryBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -363,6 +393,10 @@ public class HomeFragment extends Fragment {
                    // make the selected image available in the post tweet dialog
                     Processor processor = new Processor(getContext(), userImages);
                     processor.setTweetImage(imageD,pickPicture);
+
+                     tweetImageName=imageName;
+                     tweetImageUri=imageUri;
+
 
                 }
 
